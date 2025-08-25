@@ -18,10 +18,16 @@ const grayMedium = Color.fromRGBO(188, 191, 204, 1);
 const grayLight = Color.fromRGBO(211, 214, 224, 1);
 
 const blue = Color.fromRGBO(0, 92, 255, 1);
-const blueLight = Color.fromRGBO(67, 177, 232, 1); 
+const blueLight = Color.fromRGBO(67, 177, 232, 1);
+const black = Color.fromRGBO(0, 0, 0, 1);
 
 
 const errandClr = Color.fromRGBO(228, 119, 96, 1);
 const rideClr = blueLight;
 const favorClr = Color.fromRGBO(174, 184, 67, 1);
 const othersClr = Color.fromRGBO(132, 132, 132, 1);
+
+
+const darkGray = Color(0xff5E5E5E);
+const lightYellow = Color(0xffFAFFD7);
+const lightGray = Color(0xffFFDDD7);

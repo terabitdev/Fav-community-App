@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) => MultiProvider(
         providers: [
+
           ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider(create: (_) => NavProvider()),
           ChangeNotifierProvider(create: (_) => FilterProvider()),

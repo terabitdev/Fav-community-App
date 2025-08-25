@@ -8,6 +8,9 @@ import '../screens/auth/login_screen.dart';
 import '../screens/auth/signup_screen.dart';
 import '../screens/auth/onboarding_screen1.dart';
 import '../screens/community/feed_screen.dart';
+import '../screens/direct_requests/UpdatesRequestAcceptedViewDetailsScreen.dart';
+import '../screens/groups/groups_screen.dart';
+import '../screens/profile/profile_screen.dart';
 
 enum AppRoute {
   login('/login'),
@@ -17,7 +20,10 @@ enum AppRoute {
   home('/'),
   feed('/feed'),
   forgotPassword('/forgot-password'),
-  setNewPassword('/new-password');
+  setNewPassword('/new-password'),
+  updatesrequestacceptedviewdetailsscreen('/updatesrequestacceptedviewdetailsscreen'),
+  userProfileScreen('/user-profile-screen'),
+  myGroupsScreen('/my-groups-screen');
 
   final String path;
   const AppRoute(this.path);
@@ -25,9 +31,29 @@ enum AppRoute {
 
 class AppRoutes {
   static GoRouter router = GoRouter(
-    initialLocation: AppRoute.login.path,
+    initialLocation: AppRoute.updatesrequestacceptedviewdetailsscreen.path,
     debugLogDiagnostics: true,
     routes: [
+      GoRoute(
+        path: AppRoute.myGroupsScreen.path,
+        name: AppRoute.myGroupsScreen.name,
+        pageBuilder: (context, state) => _buildCupertinoPage(
+          context: context,
+          state: state,
+          child: const MyGroupsScreen(),
+        ),
+      ),
+
+      GoRoute(
+        path: AppRoute.userProfileScreen.path,
+        name: AppRoute.userProfileScreen.name,
+        pageBuilder: (context, state) => _buildCupertinoPage(
+          context: context,
+          state: state,
+          child: const UserProfileScreen(),
+        ),
+      ),
+
       GoRoute(
         path: AppRoute.login.path,
         name: AppRoute.login.name,
@@ -48,6 +74,15 @@ class AppRoutes {
         ),
       ),
 
+      GoRoute(
+        path: AppRoute.updatesrequestacceptedviewdetailsscreen.path,
+        name: AppRoute.updatesrequestacceptedviewdetailsscreen.name,
+        pageBuilder: (context, state) => _buildCupertinoPage(
+          context: context,
+          state: state,
+          child: const  Updatesrequestacceptedviewdetailsscreen(),
+        ),
+      ),
 
 
 
