@@ -9,6 +9,7 @@ import '../screens/auth/signup_screen.dart';
 import '../screens/auth/onboarding_screen1.dart';
 import '../screens/community/feed_screen.dart';
 import '../screens/direct_requests/UpdatesRequestAcceptedViewDetailsScreen.dart';
+import '../screens/groups/GroupSettingAdminScreen.dart';
 import '../screens/groups/groups_screen.dart';
 import '../screens/profile/profile_screen.dart';
 
@@ -23,7 +24,8 @@ enum AppRoute {
   setNewPassword('/new-password'),
   updatesrequestacceptedviewdetailsscreen('/updatesrequestacceptedviewdetailsscreen'),
   userProfileScreen('/user-profile-screen'),
-  myGroupsScreen('/my-groups-screen');
+  myGroupsScreen('/my-groups-screen'),
+  groupSettingAdminScreen('/group-setting-admin-screen');
 
   final String path;
   const AppRoute(this.path);
@@ -84,7 +86,15 @@ class AppRoutes {
         ),
       ),
 
-
+      GoRoute(
+        path: AppRoute.groupSettingAdminScreen.path,
+        name: AppRoute.groupSettingAdminScreen.name,
+        pageBuilder: (context, state) => _buildCupertinoPage(
+          context: context,
+          state: state,
+          child: const GroupSettingAdminScreen(),
+        ),
+      ),
 
       GoRoute(
         path: AppRoute.signup.path,

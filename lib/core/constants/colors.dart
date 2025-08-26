@@ -31,3 +31,5 @@ const othersClr = Color.fromRGBO(132, 132, 132, 1);
 const darkGray = Color(0xff5E5E5E);
 const lightYellow = Color(0xffFAFFD7);
 const lightGray = Color(0xffFFDDD7);
+const cyanGreen = Color(0xff1E9695);
+const white = Color(0xffFFFFFF);

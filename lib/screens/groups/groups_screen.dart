@@ -1,8 +1,10 @@
 import 'package:fava/core/constants/responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../app/routes.dart';
 import '../../core/constants/colors.dart';
 import '../../providers/groups_provider.dart';
 import '../../widgets/auth/custom_auth_header.dart';
@@ -44,6 +46,7 @@ class _MyGroupsScreenState extends State<MyGroupsScreen> {
                                 print("View Group pressed: ${group.title}");
                               },
                               onSettings: () {
+                                context.pushNamed(AppRoute.groupSettingAdminScreen.name);
                                 print("Group settings pressed: ${group.title}");
                               },
                             ),
