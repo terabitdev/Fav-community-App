@@ -283,7 +283,7 @@ import 'package:flutter/foundation.dart';
 // Final Version
 // lib/providers/filter_provider.dart
 class FilterProvider extends ChangeNotifier {
-  final MockDatabaseService _databaseService = MockDatabaseService();
+  final MockDatabaseServices _databaseService = MockDatabaseServices();
   Timer? _searchDebounceTimer;
   
   // Private state

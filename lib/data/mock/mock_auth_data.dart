@@ -1,6 +1,22 @@
 import 'package:fava/models/request.dart';
 import 'package:fava/models/user.dart';
 
+class MockAuthData {
+  static UserModel? currentUser;
+  
+  static void initializeWithDefaultUser() {
+    currentUser = mockUsers.first;
+  }
+  
+  static void setCurrentUser(UserModel user) {
+    currentUser = user;
+  }
+  
+  static void clearCurrentUser() {
+    currentUser = null;
+  }
+}
+
 /// Mock user database (in-memory list)
 final List<UserModel> mockUsers = [
   UserModel(

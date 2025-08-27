@@ -21,7 +21,8 @@ class SetNewPassword extends StatefulWidget {
 class _SetNewPasswordState extends State<SetNewPassword> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _confirmPasswordFocusNode = FocusNode();
@@ -82,13 +83,14 @@ class _SetNewPasswordState extends State<SetNewPassword> {
     authProvider.clearState();
 
     _validateAndFocus();
-    
+
     if (!_hasPasswordError && !_hasConfirmPasswordError) {
       // Call the set new password function
       final success = await authProvider.setNewPassword(
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
-        resetToken: "valid_token", // In real app, this would come from the reset link
+        resetToken:
+            "valid_token", // In real app, this would come from the reset link
       );
 
       if (success && mounted) {
@@ -100,7 +102,9 @@ class _SetNewPasswordState extends State<SetNewPassword> {
   }
 
   void _validateAndFocus() {
-    final passwordError = AppValidators.validatePassword(_passwordController.text);
+    final passwordError = AppValidators.validatePassword(
+      _passwordController.text,
+    );
     final confirmPasswordError = AppValidators.validateConfirmPassword(
       _confirmPasswordController.text,
       _passwordController.text,
@@ -140,7 +144,7 @@ class _SetNewPasswordState extends State<SetNewPassword> {
       });
       return;
     }
-    
+
     setState(() {
       _hasPasswordError = false;
       _currentError = null;
@@ -161,7 +165,7 @@ class _SetNewPasswordState extends State<SetNewPassword> {
       });
       return;
     }
-    
+
     setState(() {
       _hasConfirmPasswordError = false;
       _currentError = null;
@@ -184,7 +188,12 @@ class _SetNewPasswordState extends State<SetNewPassword> {
               child: Column(
                 children: [
                   SizedBox(height: 22.h),
-                  CustomAuthHeader(backButton: true, title: 'New Password'),
+                  CustomAppBar(
+                    backButton: true,
+                    subtitle: 'New Password',
+                    title: "New Password",
+                    appLogo: true,
+                  ),
                   SizedBox(height: 15.h),
 
                   _CustomTextFormField(
@@ -211,32 +220,35 @@ class _SetNewPasswordState extends State<SetNewPassword> {
                   ),
 
                   SizedBox(height: 25.h),
-                  
+
                   Consumer<AuthProvider>(
                     builder: (context, authProvider, child) {
                       return CustomElevatedButton(
                         text: "Set Password",
-                        onPressed: authProvider.isLoading ? null : _handleSetPassword,
+                        onPressed: authProvider.isLoading
+                            ? null
+                            : _handleSetPassword,
                         isLoading: authProvider.isLoading,
                       );
                     },
                   ),
 
                   SizedBox(height: 10.h),
-                  
+
                   Consumer<AuthProvider>(
                     builder: (context, authProvider, child) {
-                      final authError = authProvider.errorMessage != null &&
-                          authProvider.status == AuthStatus.failure
+                      final authError =
+                          authProvider.errorMessage != null &&
+                              authProvider.status == AuthStatus.failure
                           ? authProvider.errorMessage!
                           : null;
 
                       final errorMessage = authError ?? _currentError ?? "";
-                      
+
                       return _ErrorMessageWidget(message: errorMessage);
                     },
                   ),
-                  
+
                   SizedBox(height: 43.h),
                   SocialLoginSection(),
                 ],
@@ -291,7 +303,7 @@ class _CustomTextFormField extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
         ],
-        
+
         SizedBox(
           height: 36.h,
           child: TextFormField(
@@ -305,7 +317,7 @@ class _CustomTextFormField extends StatelessWidget {
             obscureText: obscureText ?? false,
             textInputAction: textInputAction,
             onFieldSubmitted: onFieldSubmitted,
-            
+
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: AppTextStyles.futuraBook400.copyWith(
@@ -314,19 +326,25 @@ class _CustomTextFormField extends StatelessWidget {
               ),
               filled: true,
               fillColor: txtfieldbgclr,
-              
+
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16.w,
                 vertical: 10.h,
               ),
-              
+
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),

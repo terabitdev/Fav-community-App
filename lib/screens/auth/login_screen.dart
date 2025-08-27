@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  CustomAuthHeader(backButton: false, title: "Sign In"),
+                  CustomAppBar(backButton: false, title: "Sign In"),
                   SizedBox(height: 23.h),
 
                   // Email Field - Using your existing validator with FocusNode
@@ -290,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
     authProvider.clearState();
 
     _validateAndFocus();
-    
+
     if (!_hasEmailError && !_hasPasswordError) {
       final success = await authProvider.login(
         email: _emailController.text.trim(),
@@ -306,7 +306,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _validateAndFocus() {
     final emailError = AppValidators.validateEmail(_emailController.text);
-    final passwordError = AppValidators.validatePassword(_passwordController.text);
+    final passwordError = AppValidators.validatePassword(
+      _passwordController.text,
+    );
 
     // Focus on first invalid field only
     if (emailError != null) {
@@ -341,7 +343,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _hasEmailError = false;
       _currentError = null;
@@ -358,7 +360,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _hasPasswordError = false;
       _currentError = null;
@@ -380,7 +382,12 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  CustomAuthHeader(backButton: false, title: "Sign In"),
+                  CustomAppBar(
+                    backButton: false,
+                    title: "Sign In",
+                    subtitle: "Sign In",
+                    appLogo: true,
+                  ),
                   SizedBox(height: 23.h),
 
                   _CustomTextFormField(
@@ -440,7 +447,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, authProvider, child) {
                       return CustomElevatedButton(
                         text: "Sign In",
-                        onPressed: authProvider.isLoading ? null : _handleValidate,
+                        onPressed: authProvider.isLoading
+                            ? null
+                            : _handleValidate,
                         isLoading: authProvider.isLoading,
                       );
                     },
@@ -452,13 +461,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   Consumer<AuthProvider>(
                     builder: (context, authProvider, child) {
-                      final authError = authProvider.errorMessage != null &&
-                          authProvider.status == AuthStatus.failure
+                      final authError =
+                          authProvider.errorMessage != null &&
+                              authProvider.status == AuthStatus.failure
                           ? authProvider.errorMessage!
                           : null;
 
                       final errorMessage = authError ?? _currentError ?? "";
-                      
+
                       return _ErrorMessageWidget(message: errorMessage);
                     },
                   ),
@@ -519,7 +529,7 @@ class _CustomTextFormField extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
         ],
-        
+
         SizedBox(
           height: 36.h,
           child: TextFormField(
@@ -534,7 +544,7 @@ class _CustomTextFormField extends StatelessWidget {
             keyboardType: keyboardType,
             textInputAction: textInputAction,
             onFieldSubmitted: onFieldSubmitted,
-            
+
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: AppTextStyles.futuraBook400.copyWith(
@@ -543,19 +553,25 @@ class _CustomTextFormField extends StatelessWidget {
               ),
               filled: true,
               fillColor: txtfieldbgclr,
-              
+
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16.w,
                 vertical: 10.h,
               ),
-              
+
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),

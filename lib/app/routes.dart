@@ -25,7 +25,7 @@ enum AppRoute {
 
 class AppRoutes {
   static GoRouter router = GoRouter(
-    initialLocation: AppRoute.login.path,
+    initialLocation: AppRoute.home.path,
     debugLogDiagnostics: true,
     routes: [
       GoRoute(

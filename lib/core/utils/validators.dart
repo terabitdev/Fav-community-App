@@ -61,4 +61,54 @@ class AppValidators {
     }
     return null;
   }
+  
+  // ---------------------- Title ----------------------
+  static String? validateTitle(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Title is required";
+    }
+    if (value.length < 3) {
+      return "Title must be at least 3 characters";
+    }
+    if (value.length > 100) {
+      return "Title must be less than 100 characters";
+    }
+    return null;
+  }
+  
+  // ---------------------- Description ----------------------
+  static String? validateDescription(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Description is required";
+    }
+    if (value.length < 10) {
+      return "Description must be at least 10 characters";
+    }
+    if (value.length > 500) {
+      return "Description must be less than 500 characters";
+    }
+    return null;
+  }
+  
+  // ---------------------- Location ----------------------
+  static String? validateLocation(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Location is required";
+    }
+    if (value.length < 3) {
+      return "Please enter a valid location";
+    }
+    return null;
+  }
+  
+  // ---------------------- Date ----------------------
+  static String? validateDate(DateTime? value) {
+    if (value == null) {
+      return "Date is required";
+    }
+    if (value.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+      return "Date cannot be in the past";
+    }
+    return null;
+  }
 }

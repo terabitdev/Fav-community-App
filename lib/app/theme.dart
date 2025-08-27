@@ -1,3 +1,4 @@
+import 'package:fava/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -6,7 +7,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
+        seedColor: bgclr,
         brightness: Brightness.light,
       ),
       fontFamily: 'FuturaPT',

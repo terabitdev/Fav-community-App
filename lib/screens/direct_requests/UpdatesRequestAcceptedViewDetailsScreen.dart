@@ -33,7 +33,7 @@
 //               mainAxisAlignment: MainAxisAlignment.start,
 //               crossAxisAlignment: CrossAxisAlignment.start,
 //               children: [
-//                 CustomAuthHeader(backButton: true, title: 'View Details'),
+//                 CustomAppBar(backButton: true, title: 'View Details'),
 //                 Text(
 //                   'Details',
 //                   style: AppTextStyles.futuraDemi.copyWith(

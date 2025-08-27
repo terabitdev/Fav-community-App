@@ -1,8 +1,16 @@
 import 'package:fava/core/constants/colors.dart';
+import 'package:fava/core/utils/app_text_styles.dart';
 import 'package:fava/navigation/bottom_nav_bar.dart';
+import 'package:fava/providers/filter_provider.dart';
 import 'package:fava/providers/nav_provider.dart';
+import 'package:fava/screens/community/request_screen.dart';
 import 'package:fava/screens/community/feed_screen.dart';
+import 'package:fava/screens/groups/groups_screen.dart';
+import 'package:fava/screens/profile/profile_screen.dart';
+import 'package:fava/screens/updates/updates_screen.dart';
+import 'package:fava/widgets/auth/custom_auth_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,19 +33,19 @@ class _HomeScreenState extends State<HomeScreen>
   ];
 
   final List<String> titles = [
-    'home',
+    'Feed',
+    'Groups',
+    'Request',
+    'Updates',
     'Profile',
-    'Add',
-    'Notifications',
-    'Account',
   ];
 
   final List<Widget> screens = [
     const FeedScreen(),
+    const GroupsScreen(),
+    const RequestScreen(),
+    const UpdateScreen(),
     const ProfileScreen(),
-    const AddScreen(),
-    const NotificationsScreen(),
-    const AccountScreen(),
   ];
 
   @override
@@ -45,15 +53,19 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
 
     _floatController = AnimationController(
-      duration: const Duration(milliseconds: 300), // Slightly longer for smooth float
+      duration: const Duration(
+        milliseconds: 300,
+      ), // Slightly longer for smooth float
       vsync: this,
       value: 1.0, // Start at floated position
     );
 
     // Set the float controller in the provider after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<NavProvider>(context, listen: false)
-          .setFloatController(_floatController);
+      Provider.of<NavProvider>(
+        context,
+        listen: false,
+      ).setFloatController(_floatController);
     });
   }
 
@@ -71,10 +83,29 @@ class _HomeScreenState extends State<HomeScreen>
           extendBody: true,
           backgroundColor: bgclr,
           body: SafeArea(
-            child: PageView(
-              controller: navProvider.pageController,
-              physics: const NeverScrollableScrollPhysics(), // Disable swipe navigation
-              children: screens,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // SizedBox(height: 22.h),
+                  CustomAppBar(
+                    backButton: false,
+                    title: "Feed Screen",
+                    appLogo: true,
+                  ),
+                  SizedBox(height: 17.h),
+                  buildSearchField(),
+                  Expanded(
+                    child: PageView(
+                      controller: navProvider.pageController,
+                      physics:
+                          const NeverScrollableScrollPhysics(), // Disable swipe navigation
+                      children: screens,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           bottomNavigationBar: CustomBottomNavBar(
@@ -85,4 +116,29 @@ class _HomeScreenState extends State<HomeScreen>
       },
     );
   }
+}
+
+Widget buildSearchField() {
+  return Consumer<FilterProvider>(
+    builder: (context, filterProvider, _) {
+      return SizedBox(
+        height: 36.h,
+        child: TextField(
+          onChanged: filterProvider.setSearch,
+          decoration: InputDecoration(
+            filled: true,
+            suffixIcon: Icon(Icons.search, color: hintxtclr),
+            fillColor: txtfieldbgclr,
+            hintText: 'Search requests...',
+            hintStyle: AppTextStyles.futuraBook400.copyWith(color: hintxtclr),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
+          ),
+        ),
+      );
+    },
+  );
 }

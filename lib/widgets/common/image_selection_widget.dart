@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:fava/core/constants/colors.dart';
 import 'package:fava/core/utils/app_text_styles.dart';
 import 'package:fava/core/utils/helpers.dart';
+import 'package:fava/core/utils/image_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

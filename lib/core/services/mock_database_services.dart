@@ -4,13 +4,14 @@
 import 'package:fava/data/mock/mock_auth_data.dart';
 import 'package:fava/models/request.dart';
 
-class MockDatabaseService {
-  static final MockDatabaseService _instance = MockDatabaseService._internal();
-  factory MockDatabaseService() => _instance;
-  MockDatabaseService._internal();
+class MockDatabaseServices {
+  static final MockDatabaseServices _instance = MockDatabaseServices._internal();
+  factory MockDatabaseServices() => _instance;
+  MockDatabaseServices._internal();
 
   // In-memory storage
-  final List<RequestData> _requests = mockRequests;
+  final List<Request> _requests = [];
+  final List<RequestData> _requestData = mockRequests;
   // Simulate network delay
   Future<void> _simulateNetworkDelay() async {
     await Future.delayed(const Duration(milliseconds: 100));
@@ -18,6 +19,12 @@ class MockDatabaseService {
 
   // Fetch all requests
   Future<List<RequestData>> fetchRequests() async {
+    await _simulateNetworkDelay();
+    return List.from(_requestData);
+  }
+
+  // Get all requests
+  Future<List<Request>> getAllRequests() async {
     await _simulateNetworkDelay();
     return List.from(_requests);
   }
@@ -27,10 +34,10 @@ class MockDatabaseService {
     await _simulateNetworkDelay();
     
     if (requestType.toLowerCase() == 'all') {
-      return List.from(_requests);
+      return List.from(_requestData);
     }
     
-    return _requests
+    return _requestData
         .where((request) => 
             request.requestType.toLowerCase() == requestType.toLowerCase())
         .toList();
@@ -41,10 +48,10 @@ class MockDatabaseService {
     await _simulateNetworkDelay();
     
     if (query.isEmpty) {
-      return List.from(_requests);
+      return List.from(_requestData);
     }
     
-    return _requests
+    return _requestData
         .where((request) => 
             request.requestType.toLowerCase().contains(query.toLowerCase()) ||
             request.requestTitle.toLowerCase().contains(query.toLowerCase()) ||
@@ -59,7 +66,7 @@ class MockDatabaseService {
   }) async {
     await _simulateNetworkDelay();
     
-    List<RequestData> filteredData = List.from(_requests);
+    List<RequestData> filteredData = List.from(_requestData);
     
     // Apply type filter
     if (requestType.toLowerCase() != 'all') {
@@ -82,27 +89,29 @@ class MockDatabaseService {
     return filteredData;
   }
 
-  // Add new request (for future CRUD operations)
-  Future<bool> addRequest(RequestData request) async {
+  // Add new request
+  Future<bool> addRequest(Request request) async {
     await _simulateNetworkDelay();
     _requests.add(request);
     return true;
   }
 
-  // Update request (for future CRUD operations)
-  Future<bool> updateRequest(int index, RequestData request) async {
+  // Update request
+  Future<bool> updateRequest(String requestId, Request request) async {
     await _simulateNetworkDelay();
-    if (index >= 0 && index < _requests.length) {
+    final index = _requests.indexWhere((r) => r.id == requestId);
+    if (index != -1) {
       _requests[index] = request;
       return true;
     }
     return false;
   }
 
-  // Delete request (for future CRUD operations)
-  Future<bool> deleteRequest(int index) async {
+  // Delete request
+  Future<bool> deleteRequest(String requestId) async {
     await _simulateNetworkDelay();
-    if (index >= 0 && index < _requests.length) {
+    final index = _requests.indexWhere((r) => r.id == requestId);
+    if (index != -1) {
       _requests.removeAt(index);
       return true;
     }

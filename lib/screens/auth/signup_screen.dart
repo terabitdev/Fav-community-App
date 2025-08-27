@@ -150,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             autovalidateMode: AutovalidateMode.disabled,
             child: Column(
               children: [
-                CustomAuthHeader(backButton: false, title: "Sign Up"),
+                CustomAppBar(backButton: false, title: "Sign Up"),
                 SizedBox(height: 23.h),
                 Expanded(
                   child: SingleChildScrollView(
@@ -309,7 +309,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
@@ -417,13 +418,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     authProvider.clearState();
 
     _validateAndFocus();
-    
-    if (_nameError == null && 
-        _emailError == null && 
-        _phoneError == null && 
-        _passwordError == null && 
+
+    if (_nameError == null &&
+        _emailError == null &&
+        _phoneError == null &&
+        _passwordError == null &&
         _confirmPasswordError == null) {
-      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -445,7 +445,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final nameError = AppValidators.validateName(_nameController.text);
     final emailError = AppValidators.validateEmail(_emailController.text);
     final phoneError = AppValidators.validatePhone(_phoneController.text);
-    final passwordError = AppValidators.validatePassword(_passwordController.text);
+    final passwordError = AppValidators.validatePassword(
+      _passwordController.text,
+    );
     final confirmPasswordError = AppValidators.validateConfirmPassword(
       _confirmPasswordController.text,
       _passwordController.text,
@@ -516,7 +518,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _nameError = null;
     });
@@ -531,7 +533,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _emailError = null;
     });
@@ -546,7 +548,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _phoneError = null;
     });
@@ -561,7 +563,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _passwordError = null;
     });
@@ -579,7 +581,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _confirmPasswordError = null;
     });
@@ -599,7 +601,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             key: _formKey,
             child: Column(
               children: [
-                CustomAuthHeader(backButton: false, title: "Sign Up"),
+                CustomAppBar(
+                  backButton: false,
+                  title: "Sign Up",
+                  subtitle: "Sign Up",
+                  appLogo: true,
+                ),
                 SizedBox(height: 23.h),
                 Expanded(
                   child: SingleChildScrollView(
@@ -614,7 +621,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.next,
                           error: _nameError,
-                          helperText: "This can be your name, a nickname can be set later.",
+                          helperText:
+                              "This can be your name, a nickname can be set later.",
                           onFieldSubmitted: _handleNameSubmitted,
                         ),
                         SizedBox(height: 10.h),
@@ -652,7 +660,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           focusNode: _passwordFocusNode,
                           textInputAction: TextInputAction.next,
                           error: _passwordError,
-                          helperText: "Password must be at least 8 characters and include a number.",
+                          helperText:
+                              "Password must be at least 8 characters and include a number.",
                           onFieldSubmitted: _handlePasswordSubmitted,
                         ),
                         SizedBox(height: 10.h),
@@ -686,7 +695,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           builder: (context, authProvider, child) {
                             return CustomElevatedButton(
                               text: "Sign Up",
-                              onPressed: authProvider.isLoading ? null : _handleValidate,
+                              onPressed: authProvider.isLoading
+                                  ? null
+                                  : _handleValidate,
                               isLoading: authProvider.isLoading,
                             );
                           },
@@ -759,7 +770,7 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
         ],
-        
+
         SizedBox(
           height: 36.h,
           child: TextFormField(
@@ -775,7 +786,7 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
             textInputAction: textInputAction,
             inputFormatters: inputFormatters,
             onFieldSubmitted: onFieldSubmitted,
-            
+
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: AppTextStyles.futuraBook400.copyWith(
@@ -784,19 +795,25 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
               ),
               filled: true,
               fillColor: txtfieldbgclr,
-              
+
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16.w,
                 vertical: 10.h,
               ),
-              
+
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
@@ -805,7 +822,7 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
             ),
           ),
         ),
-        
+
         // Fixed height container for helper/error text to prevent layout shift
         SizedBox(
           height: 18.h,

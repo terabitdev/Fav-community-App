@@ -59,7 +59,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     authProvider.clearState();
 
     final emailError = AppValidators.validateEmail(_emailController.text);
-    
+
     if (emailError != null) {
       _emailFocusNode.requestFocus();
       setState(() {
@@ -95,7 +95,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       });
       return;
     }
-    
+
     setState(() {
       _hasEmailError = false;
       _currentError = null;
@@ -118,7 +118,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: Column(
                 children: [
                   SizedBox(height: 22.h),
-                  CustomAuthHeader(backButton: true, title: 'Forgot Password'),
+                  CustomAppBar(
+                    backButton: true,
+                    title: 'Forgot Password',
+                    subtitle: 'Forgot Password',
+                    appLogo: true,
+                  ),
                   SizedBox(height: 15.h),
 
                   _CustomTextFormField(
@@ -133,34 +138,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
 
                   SizedBox(height: 25.h),
-                  
+
                   Consumer<AuthProvider>(
                     builder: (context, authProvider, child) {
                       return CustomElevatedButton(
-                        text: "Send", 
+                        text: "Send",
                         onPressed: authProvider.isLoading ? null : _handleSend,
                         isLoading: authProvider.isLoading,
                       );
                     },
                   ),
-                  
+
                   SizedBox(height: 10.h),
-                  
+
                   Consumer<AuthProvider>(
                     builder: (context, authProvider, child) {
-                      final authError = authProvider.errorMessage != null &&
-                          authProvider.status == AuthStatus.failure
+                      final authError =
+                          authProvider.errorMessage != null &&
+                              authProvider.status == AuthStatus.failure
                           ? authProvider.errorMessage!
                           : null;
 
                       final errorMessage = authError ?? _currentError ?? "";
-                      
+
                       return _ErrorMessageWidget(message: errorMessage);
                     },
                   ),
-                  
+
                   SizedBox(height: 7.h),
-                  
+
                   Align(
                     alignment: Alignment.centerRight,
                     child: RichText(
@@ -175,7 +181,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           TextSpan(
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () => context.pushNamed(AppRoute.login.name),
+                              ..onTap = () =>
+                                  context.pushNamed(AppRoute.login.name),
                             text: "Sign In",
                             style: AppTextStyles.manroperegular400.copyWith(
                               fontSize: 12.sp,
@@ -240,7 +247,7 @@ class _CustomTextFormField extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
         ],
-        
+
         SizedBox(
           height: 36.h,
           child: TextFormField(
@@ -254,7 +261,7 @@ class _CustomTextFormField extends StatelessWidget {
             keyboardType: keyboardType,
             textInputAction: textInputAction,
             onFieldSubmitted: onFieldSubmitted,
-            
+
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: AppTextStyles.futuraBook400.copyWith(
@@ -263,19 +270,25 @@ class _CustomTextFormField extends StatelessWidget {
               ),
               filled: true,
               fillColor: txtfieldbgclr,
-              
+
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16.w,
                 vertical: 10.h,
               ),
-              
+
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: borderColor, width: borderColor == Colors.transparent ? 0 : 1),
+                borderSide: BorderSide(
+                  color: borderColor,
+                  width: borderColor == Colors.transparent ? 0 : 1,
+                ),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),

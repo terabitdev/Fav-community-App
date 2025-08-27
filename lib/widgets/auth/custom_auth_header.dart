@@ -3,10 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CustomAuthHeader extends StatelessWidget {
+class CustomAppBar extends StatelessWidget {
   final bool backButton;
-  final String? title;
-  const CustomAuthHeader({super.key, required this.backButton, this.title});
+  final String title;
+  final String? subtitle; // Fixed: changed from Subtitle to subtitle (camelCase)
+  final bool appLogo;
+  
+  const CustomAppBar({
+    super.key,
+    required this.backButton,
+    required this.title,
+    this.subtitle, // Fixed: parameter name
+    required this.appLogo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,43 +25,44 @@ class CustomAuthHeader extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          
           children: [
-            backButton
-                ? GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: SvgPicture.asset(
-                      "assets/icons/back_button.svg",
-                      // color: buttonclr,
-                      width: 12.w,
-                      height: 23.h,
-                    ),
-                )
-                : SizedBox.shrink(),
-            SizedBox(width: backButton ? 14.w : 0),      
-            SvgPicture.asset(
-              'assets/logos/app_logo_horizontal.svg',
-              width: 80.w,
-              height: 28.h,
-            ),
+            if (backButton) // Fixed: cleaner conditional rendering
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: SvgPicture.asset(
+                  "assets/icons/back_button.svg",
+                  width: 12.w,
+                  height: 23.h,
+                ),
+              ),
+            if (backButton) SizedBox(width: 14.w), // Fixed: cleaner conditional spacing
+            if (appLogo)
+              SvgPicture.asset(
+                'assets/logos/app_logo_horizontal.svg',
+                width: 80.w,
+                height: 28.h,
+              )
+            else
+              Text(
+                title, // Fixed: removed unnecessary null assertion operator
+                style: AppTextStyles.futuraBook400.copyWith(
+                  fontSize: 16.sp,
+                ),
+              ),
           ],
         ),
-
-        title != null
-            ? Column(
-                children: [
-                  SizedBox(height: 11.h),
-                  Center(
-                    child: Text(
-                      title!,
-                      style: AppTextStyles.futuraBook400.copyWith(
-                        fontSize: 32.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : const SizedBox.shrink(),
+        if (subtitle != null) ...[
+          // Fixed: cleaner conditional rendering with spread operator
+          SizedBox(height: 11.h),
+          Center(
+            child: Text(
+              subtitle!, // Safe to use ! here since we checked null above
+              style: AppTextStyles.futuraBook400.copyWith(
+                fontSize: 32.sp,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
