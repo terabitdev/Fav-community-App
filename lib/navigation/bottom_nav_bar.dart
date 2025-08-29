@@ -44,7 +44,7 @@ class CustomBottomNavBar extends StatelessWidget {
                       navProvider.floatController?.forward();
                     },
                     type: BottomNavigationBarType.fixed,
-                    backgroundColor: bgclr,
+                    backgroundColor: AppColors.bgclr,
                     selectedItemColor: Colors.transparent,
                     unselectedItemColor: Colors.grey[600],
                     selectedFontSize: 0,
@@ -90,13 +90,13 @@ class CustomBottomNavBar extends StatelessWidget {
                             width: 81.w,
                             height: 55.h,
                             decoration: BoxDecoration(
-                              color: buttonclr,
+                              color: AppColors.buttonclr,
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               iconList[navProvider.selectedIndex],
                               size: 26.r,
-                              color: bgclr,
+                              color: AppColors.bgclr,
                             ),
                           ),
                         ),

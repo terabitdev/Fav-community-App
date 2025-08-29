@@ -21,7 +21,7 @@ class LocationSharingWidget extends StatelessWidget {
       height: 64.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: successclr, width: 1.w),
+        border: Border.all(color: AppColors.buttonclr, width: 1.w),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -42,7 +42,7 @@ class LocationSharingWidget extends StatelessWidget {
                 "Help others find you for local requests",
                 style: AppTextStyles.futuraBook400.copyWith(
                   fontSize: 10.sp,
-                  color: grayMedium,
+                  color: AppColors.grayMedium,
                 ),
               ),
             ],
@@ -130,7 +130,7 @@ class _CustomSwitchButtonState extends State<CustomSwitchButton>
             height: switchHeight,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(switchHeight / 2),
-              color: Color.lerp(hintxtclr, successclr, _animation.value),
+              color: Color.lerp(AppColors.hintxtclr, AppColors.buttonclr, _animation.value),
             ),
             child: Stack(
               children: [

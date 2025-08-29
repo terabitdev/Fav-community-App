@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
+  final bool isAddPhoto;
+  final TextStyle? style;
   final String iconPath;
   final String title;
   final VoidCallback onpressed;
@@ -13,22 +15,24 @@ class CustomOutlinedButton extends StatelessWidget {
     required this.iconPath,
     required this.title,
     required this.onpressed,
+    this.style,
+    this.isAddPhoto = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.h,
+      height: isAddPhoto ? 44.h : 40.h,
       width: double.infinity,
       child: OutlinedButton(
         onPressed: onpressed,
         style: ButtonStyle(
           side: WidgetStateProperty.all(
-            BorderSide(color: successclr, width: 1),
+            BorderSide(color: AppColors.buttonclr, width: 1),
           ),
           foregroundColor: WidgetStateProperty.all(Colors.black),
           shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(isAddPhoto ? 5.r : 10.r)),
           ),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
           // foregroundColor: WidgetStateProperty.all()
@@ -41,7 +45,9 @@ class CustomOutlinedButton extends StatelessWidget {
             SizedBox(width: 10.w),
             Text(
               title,
-              style: AppTextStyles.futuraBook400.copyWith(fontSize: 15.sp),
+              style:
+                  style ??
+                  AppTextStyles.futuraBook400.copyWith(fontSize: 15.sp),
             ),
           ],
         ),

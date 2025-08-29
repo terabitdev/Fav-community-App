@@ -41,12 +41,12 @@ class CustomSearchField extends StatelessWidget {
         enabled: enabled,
         decoration: InputDecoration(
           filled: true,
-          suffixIcon: suffixIcon ?? Icon(Icons.search, color: iconColor ?? hintxtclr),
+          suffixIcon: suffixIcon ?? Icon(Icons.search, color: iconColor ?? AppColors.hintxtclr),
           prefixIcon: prefixIcon,
-          fillColor: fillColor ?? txtfieldbgclr,
+          fillColor: fillColor ?? AppColors.txtfieldbgclr,
           hintText: hintText,
           hintStyle: AppTextStyles.futuraBook400.copyWith(
-            color: hintColor ?? hintxtclr,
+            color: hintColor ?? AppColors.hintxtclr,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.r),

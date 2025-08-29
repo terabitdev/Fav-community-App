@@ -27,6 +27,26 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // Handle email field changes (clear auth errors while typing)
+  void handleEmailChanged() {
+    clearError();
+  }
+
+  // Handle email field submission (dismiss keyboard and trigger form submit)
+  Future<void> handleEmailSubmitted({
+    required GlobalKey<FormState> formKey,
+    required String email,
+    required Function() dismissKeyboard,
+    required Function() onSuccess,
+  }) async {
+    dismissKeyboard();
+    await handleForgotPasswordSubmit(
+      formKey: formKey,
+      email: email,
+      onSuccess: onSuccess,
+    );
+  }
+
   // Clear all states (including loading)
   void clearState() {
     _status = AuthStatus.initial;
@@ -64,6 +84,24 @@ class AuthProvider extends ChangeNotifier {
       _isLoggedIn = false;
       return false;
     }
+  }
+
+  // Handle forgot password form submission with validation
+  Future<bool> handleForgotPasswordSubmit({
+    required GlobalKey<FormState> formKey,
+    required String email,
+    required Function() onSuccess,
+  }) async {
+    // Use default form validation
+    if (!formKey.currentState!.validate()) {
+      return false;
+    }
+
+    final success = await sendPasswordReset(email: email.trim());
+    if (success) {
+      onSuccess();
+    }
+    return success;
   }
 
   // Forgot Password functionality - sends reset code to email
@@ -136,12 +174,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Reset auth state
-  void reset() {
-    _status = AuthStatus.initial;
-    _errorMessage = null;
-    notifyListeners();
-  }
 
   // Private helper to set status
   void _setStatus(AuthStatus status) {

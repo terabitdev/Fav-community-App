@@ -4,17 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomAppBar extends StatelessWidget {
+  final int? topHeight;
   final bool backButton;
   final String title;
-  final String? subtitle; // Fixed: changed from Subtitle to subtitle (camelCase)
+  final String?
+  subtitle; // Fixed: changed from Subtitle to subtitle (camelCase)
   final bool appLogo;
-  
+
   const CustomAppBar({
     super.key,
     required this.backButton,
     required this.title,
     this.subtitle, // Fixed: parameter name
     required this.appLogo,
+    this.topHeight = 0,
   });
 
   @override
@@ -23,6 +26,7 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: topHeight!.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -35,7 +39,8 @@ class CustomAppBar extends StatelessWidget {
                   height: 23.h,
                 ),
               ),
-            if (backButton) SizedBox(width: 14.w), // Fixed: cleaner conditional spacing
+            if (backButton)
+              SizedBox(width: 14.w), // Fixed: cleaner conditional spacing
             if (appLogo)
               SvgPicture.asset(
                 'assets/logos/app_logo_horizontal.svg',
@@ -45,9 +50,7 @@ class CustomAppBar extends StatelessWidget {
             else
               Text(
                 title, // Fixed: removed unnecessary null assertion operator
-                style: AppTextStyles.futuraBook400.copyWith(
-                  fontSize: 16.sp,
-                ),
+                style: AppTextStyles.futuraBook400.copyWith(fontSize: 16.sp),
               ),
           ],
         ),
@@ -57,9 +60,7 @@ class CustomAppBar extends StatelessWidget {
           Center(
             child: Text(
               subtitle!, // Safe to use ! here since we checked null above
-              style: AppTextStyles.futuraBook400.copyWith(
-                fontSize: 32.sp,
-              ),
+              style: AppTextStyles.futuraBook400.copyWith(fontSize: 32.sp),
             ),
           ),
         ],

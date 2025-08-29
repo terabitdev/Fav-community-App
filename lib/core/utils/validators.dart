@@ -61,7 +61,6 @@ class AppValidators {
     }
     return null;
   }
-  
   // ---------------------- Title ----------------------
   static String? validateTitle(String? value) {
     if (value == null || value.isEmpty) {
@@ -108,6 +107,14 @@ class AppValidators {
     }
     if (value.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
       return "Date cannot be in the past";
+    }
+    return null;
+  }
+  
+  // ---------------------- Time ----------------------
+  static String? validateTime(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Time is required";
     }
     return null;
   }

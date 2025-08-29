@@ -1,40 +1,31 @@
 import 'dart:typed_data';
 import 'package:fava/core/constants/colors.dart';
 import 'package:fava/core/utils/app_text_styles.dart';
-import 'package:fava/core/utils/helpers.dart';
-import 'package:fava/core/utils/image_helper.dart';
+import 'package:fava/providers/request_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ImageSelectionWidget extends StatefulWidget {
+class ImageSelectionWidget extends StatelessWidget {
+  final RequestProvider provider;
   final Function(Uint8List?) onImageSelected;
   final String? buttonText;
   final String? iconPath;
-  final bool allowMultiple;
   final int maxSizeInMB;
 
   const ImageSelectionWidget({
     super.key,
+    required this.provider,
     required this.onImageSelected,
     this.buttonText = 'Add Photo',
     this.iconPath = 'assets/icons/camera.svg',
-    this.allowMultiple = false,
     this.maxSizeInMB = 5,
   });
 
-  @override
-  State<ImageSelectionWidget> createState() => _ImageSelectionWidgetState();
-}
-
-class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
-  Uint8List? _selectedImage;
-  bool _isLoading = false;
-
-  void _showImageSourceDialog() {
+  void _showImageSourceDialog(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: bgclr,
+      backgroundColor: AppColors.bgclr,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -48,7 +39,7 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: grayMedium,
+                  color: AppColors.grayMedium,
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
@@ -67,7 +58,8 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
                 subtitle: 'Choose from your photo library',
                 onTap: () async {
                   Navigator.pop(context);
-                  await _pickImage(ImageSource.gallery);
+                  await provider.pickSingleImageFromGallery(maxSizeInMB: maxSizeInMB);
+                  onImageSelected(provider.selectedSingleImage);
                 },
               ),
               SizedBox(height: 12.h),
@@ -77,10 +69,11 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
                 subtitle: 'Take a new photo',
                 onTap: () async {
                   Navigator.pop(context);
-                  await _pickImage(ImageSource.camera);
+                  await provider.pickSingleImageFromCamera(maxSizeInMB: maxSizeInMB);
+                  onImageSelected(provider.selectedSingleImage);
                 },
               ),
-              if (_selectedImage != null) ...[
+              if (provider.selectedSingleImage != null) ...[
                 SizedBox(height: 12.h),
                 _buildOptionTile(
                   icon: Icons.delete_outline,
@@ -88,7 +81,8 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
                   subtitle: 'Clear selected image',
                   onTap: () {
                     Navigator.pop(context);
-                    _removeImage();
+                    provider.removeSingleImage();
+                    onImageSelected(null);
                   },
                   isDestructive: true,
                 ),
@@ -108,7 +102,7 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
     required VoidCallback onTap,
     bool isDestructive = false,
   }) {
-    final color = isDestructive ? errorclr : buttonclr;
+    final color = isDestructive ? AppColors.errorclr : AppColors.buttonclr;
     
     return InkWell(
       onTap: onTap,
@@ -154,7 +148,7 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
                     subtitle,
                     style: AppTextStyles.futuraBook400.copyWith(
                       fontSize: 12.sp,
-                      color: grayMedium,
+                      color: AppColors.grayMedium,
                     ),
                   ),
                 ],
@@ -162,7 +156,7 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
             ),
             Icon(
               Icons.chevron_right,
-              color: grayMedium,
+              color: AppColors.grayMedium,
               size: 24.sp,
             ),
           ],
@@ -171,52 +165,11 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
     );
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      Uint8List? imageBytes;
-      
-      if (source == ImageSource.gallery) {
-        imageBytes = await ImageHelper.pickImageFromGallery();
-      } else {
-        imageBytes = await ImageHelper.pickImageFromCamera();
-      }
-
-      if (imageBytes != null) {
-        if (!ImageHelper.isImageSizeValid(imageBytes, maxSizeInMB: widget.maxSizeInMB)) {
-          _showErrorSnackBar('Image size must be less than ${widget.maxSizeInMB}MB');
-          return;
-        }
-
-        setState(() {
-          _selectedImage = imageBytes;
-        });
-        widget.onImageSelected(imageBytes);
-      }
-    } catch (e) {
-      _showErrorSnackBar('Failed to pick image. Please try again.');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  void _removeImage() {
-    setState(() {
-      _selectedImage = null;
-    });
-    widget.onImageSelected(null);
-  }
-
-  void _showErrorSnackBar(String message) {
+  void _showErrorSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: errorclr,
+        backgroundColor: AppColors.errorclr,
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.all(20.w),
         shape: RoundedRectangleBorder(
@@ -228,94 +181,110 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_selectedImage != null) {
-      return Stack(
-        children: [
-          Container(
-            height: 150.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              image: DecorationImage(
-                image: MemoryImage(_selectedImage!),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 8.h,
-            right: 8.w,
-            child: Row(
-              children: [
-                _buildImageActionButton(
-                  icon: Icons.edit,
-                  onTap: _showImageSourceDialog,
-                ),
-                SizedBox(width: 8.w),
-                _buildImageActionButton(
-                  icon: Icons.close,
-                  onTap: _removeImage,
-                  isDestructive: true,
-                ),
-              ],
-            ),
-          ),
-          if (_isLoading)
-            Positioned.fill(
-              child: Container(
+    return ListenableBuilder(
+      listenable: provider,
+      builder: (context, child) {
+        // Listen to provider state and show errors
+        if (provider.singleImageError != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _showErrorSnackBar(context, provider.singleImageError!);
+            provider.clearSingleImageError();
+          });
+        }
+
+        if (provider.selectedSingleImage != null) {
+          return Stack(
+            children: [
+              Container(
+                height: 150.h,
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: bgclr,
+                  image: DecorationImage(
+                    image: MemoryImage(provider.selectedSingleImage!),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-            ),
-        ],
-      );
-    }
-
-    return GestureDetector(
-      onTap: _isLoading ? null : _showImageSourceDialog,
-      child: Container(
-        height: 44.h,
-        decoration: BoxDecoration(
-          border: Border.all(color: successclr, width: 1),
-          borderRadius: BorderRadius.circular(5.r),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_isLoading)
-              SizedBox(
-                width: 20.w,
-                height: 20.h,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: successclr,
-                ),
-              )
-            else ...[
-              SvgPicture.asset(
-                widget.iconPath!,
-                width: 19.w,
-                height: 16.h,
-              ),
-              SizedBox(width: 8.w),
-              Text(
-                widget.buttonText!,
-                style: AppTextStyles.futuraBook400.copyWith(
-                  color: grayMedium,
-                  fontSize: 15.sp,
+              Positioned(
+                top: 8.h,
+                right: 8.w,
+                child: Row(
+                  children: [
+                    _buildImageActionButton(
+                      icon: Icons.edit,
+                      onTap: () => _showImageSourceDialog(context),
+                    ),
+                    SizedBox(width: 8.w),
+                    _buildImageActionButton(
+                      icon: Icons.close,
+                      onTap: () {
+                        provider.removeSingleImage();
+                        onImageSelected(null);
+                      },
+                      isDestructive: true,
+                    ),
+                  ],
                 ),
               ),
+              if (provider.isSingleImageLoading)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.bgclr,
+                      ),
+                    ),
+                  ),
+                ),
             ],
-          ],
-        ),
-      ),
+          );
+        }
+
+        return GestureDetector(
+          onTap: provider.isSingleImageLoading ? null : () => _showImageSourceDialog(context),
+          child: Container(
+            height: 44.h,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.buttonclr, width: 1),
+              borderRadius: BorderRadius.circular(5.r),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (provider.isSingleImageLoading)
+                  SizedBox(
+                    width: 20.w,
+                    height: 20.h,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.buttonclr,
+                    ),
+                  )
+                else ...[
+                  SvgPicture.asset(
+                    iconPath!,
+                    width: 19.w,
+                    height: 16.h,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    buttonText!,
+                    style: AppTextStyles.futuraBook400.copyWith(
+                      color: AppColors.grayMedium,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -329,20 +298,15 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
       child: Container(
         padding: EdgeInsets.all(6.w),
         decoration: BoxDecoration(
-          color: isDestructive ? errorclr : buttonclr,
+          color: isDestructive ? AppColors.errorclr : AppColors.buttonclr,
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Icon(
           icon,
-          color: bgclr,
+          color: AppColors.bgclr,
           size: 16.sp,
         ),
       ),
     );
   }
-}
-
-enum ImageSource {
-  gallery,
-  camera,
 }

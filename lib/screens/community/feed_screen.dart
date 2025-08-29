@@ -1,10 +1,8 @@
 import 'package:fava/models/request.dart';
 import 'package:fava/providers/filter_provider.dart';
-import 'package:fava/widgets/auth/custom_auth_header.dart';
-import 'package:fava/widgets/common/empty_state_widget.dart';
-import 'package:fava/widgets/common/loading_widget.dart';
+import 'package:fava/widgets/auth/custom_app_bar.dart';
+import 'package:fava/widgets/common/requests_list_widget.dart';
 import 'package:fava/widgets/community/custom_filter_chips.dart';
-import 'package:fava/widgets/community/request_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fava/core/constants/colors.dart';
@@ -17,7 +15,7 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgclr,
+      backgroundColor: AppColors.bgclr,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -31,34 +29,6 @@ class FeedScreen extends StatelessWidget {
       ),
     );
   }
-
-  // Widget buildSearchField() {
-  //   return Consumer<FilterProvider>(
-  //     builder: (context, filterProvider, _) {
-  //       return SizedBox(
-  //         height: 36.h,
-  //         child: TextField(
-  //           onChanged: filterProvider.setSearch,
-  //           decoration: InputDecoration(
-  //             filled: true,
-  //             suffixIcon: Icon(Icons.search, color: hintxtclr),
-  //             fillColor: txtfieldbgclr,
-  //             hintText: 'Search requests...',
-  //             hintStyle: AppTextStyles.futuraBook400.copyWith(color: hintxtclr),
-  //             border: OutlineInputBorder(
-  //               borderRadius: BorderRadius.circular(10.r),
-  //               borderSide: BorderSide.none,
-  //             ),
-  //             contentPadding: EdgeInsets.symmetric(
-  //               horizontal: 16.w,
-  //               vertical: 0,
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _buildRequestsHeader() {
     return Selector<FilterProvider, bool>(
@@ -80,7 +50,7 @@ class FeedScreen extends StatelessWidget {
                 child: Text(
                   "Clear Filters",
                   style: AppTextStyles.futuraBook400.copyWith(
-                    color: buttonclr,
+                    color: AppColors.buttonclr,
                     fontSize: 14.sp,
                   ),
                 ),
@@ -94,54 +64,15 @@ class FeedScreen extends StatelessWidget {
   Widget _buildRequestsList() {
     return Consumer<FilterProvider>(
       builder: (context, filterProvider, _) {
-        // Loading State
-        if (filterProvider.isLoading) {
-          return const LoadingStateWidget(
-            animationPath: 'assets/animations/loading.json',
-            title: 'Loading Requests...',
-            subtitle: 'Please wait while we fetch the latest requests',
-          );
-        }
-
-        // Empty State
-        if (!filterProvider.hasData) {
-          return EmptyStateWidget();
-        }
-
-        // Data State
-        return RefreshIndicator(
+        return RequestsListWidget(
+          requests: filterProvider.requests,
+          isLoading: filterProvider.isLoading,
+          hasData: filterProvider.hasData,
           onRefresh: filterProvider.refresh,
-          child: ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: filterProvider.requests.length,
-            itemBuilder: (context, index) {
-              // Add bounds checking to prevent RangeError
-              if (index >= filterProvider.requests.length) {
-                return const SizedBox.shrink();
-              }
-
-              final request = filterProvider.requests[index];
-              return Column(
-                children: [
-                  RequestCard(
-                    userName: request.userName,
-                    timeAgo: request.timeAgo,
-                    requestTitle: request.requestTitle,
-                    requestDescription: request.requestDescription,
-                    distance: request.distance,
-                    price: request.price,
-                    buttonText: "I GOT YOU!",
-                    onButtonPressed: () => _handleRequestAction(request),
-                    requestType: request.requestType,
-                    profileIconAsset: 'assets/icons/profile.svg',
-                    requestTypeIconAsset:
-                        'assets/icons/${request.requestType.toLowerCase()}.svg',
-                  ),
-                  SizedBox(height: 12.h),
-                ],
-              );
-            },
-          ),
+          onRequestAction: _handleRequestAction,
+          buttonText: "I GOT YOU!",
+          loadingTitle: 'Loading Requests...',
+          loadingSubtitle: 'Please wait while we fetch the latest requests',
         );
       },
     );

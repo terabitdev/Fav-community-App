@@ -21,14 +21,14 @@ class DateTimeHelper {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: buttonclr,
-              onPrimary: bgclr,
-              surface: bgclr,
+              primary: AppColors.buttonclr,
+              onPrimary: AppColors.bgclr,
+              surface: AppColors.bgclr,
               onSurface: Colors.black87,
-              secondary: successclr,
-              onSecondary: bgclr,
+              secondary: AppColors.buttonclr,
+              onSecondary: AppColors.bgclr,
             ),
-            dialogBackgroundColor: bgclr,
+            dialogBackgroundColor: AppColors.bgclr,
           ),
           child: child!,
         );
@@ -50,14 +50,14 @@ class DateTimeHelper {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: buttonclr,
-              onPrimary: bgclr,
-              surface: bgclr,
+              primary: AppColors.buttonclr,
+              onPrimary: AppColors.bgclr,
+              surface: AppColors.bgclr,
               onSurface: Colors.black87,
-              secondary: successclr,
-              onSecondary: bgclr,
+              secondary: AppColors.buttonclr,
+              onSecondary: AppColors.bgclr,
             ),
-            dialogBackgroundColor: bgclr,
+            dialogBackgroundColor: AppColors.bgclr,
           ),
           child: child!,
         );
@@ -115,14 +115,14 @@ class DateTimeHelper {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: buttonclr,
-              onPrimary: bgclr,
-              surface: bgclr,
+              primary: AppColors.buttonclr,
+              onPrimary: AppColors.bgclr,
+              surface: AppColors.bgclr,
               onSurface: Colors.black87,
-              secondary: successclr,
-              onSecondary: bgclr,
+              secondary: AppColors.buttonclr,
+              onSecondary: AppColors.bgclr,
             ),
-            dialogBackgroundColor: bgclr,
+            dialogBackgroundColor: AppColors.bgclr,
           ),
           child: child!,
         );
@@ -142,14 +142,14 @@ class DateTimeHelper {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: buttonclr,
-              onPrimary: bgclr,
-              surface: bgclr,
+              primary: AppColors.buttonclr,
+              onPrimary: AppColors.bgclr,
+              surface: AppColors.bgclr,
               onSurface: Colors.black87,
-              secondary: successclr,
-              onSecondary: bgclr,
+              secondary: AppColors.buttonclr,
+              onSecondary: AppColors.bgclr,
             ),
-            dialogBackgroundColor: bgclr,
+            dialogBackgroundColor: AppColors.bgclr,
           ),
           child: child!,
         );

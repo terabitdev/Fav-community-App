@@ -18,34 +18,43 @@ class LocationServices extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  // Permission handling
+  // Permission handling with detailed error messages
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
+    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      _error = 'Location services are disabled. Please enable them.';
+      _error = 'Location services are disabled. Please enable GPS in your device settings.';
       notifyListeners();
       return false;
     }
 
+    // Check current permission status
     permission = await Geolocator.checkPermission();
+    
+    // If permission is denied, request it
     if (permission == LocationPermission.denied) {
+      debugPrint('Requesting location permission...');
       permission = await Geolocator.requestPermission();
+      
       if (permission == LocationPermission.denied) {
-        _error = 'Location permissions are denied';
+        _error = 'Location permission was denied. Please allow location access to use this feature.';
         notifyListeners();
         return false;
       }
     }
 
+    // Handle permanently denied permissions
     if (permission == LocationPermission.deniedForever) {
-      _error = 'Location permissions are permanently denied. Please enable from settings.';
+      _error = 'Location permissions are permanently denied. Please enable them in your device settings.';
       notifyListeners();
       return false;
     }
 
+    // Clear any previous errors on success
+    _error = null;
     return true;
   }
 
@@ -65,9 +74,11 @@ class LocationServices extends ChangeNotifier {
 
       debugPrint('Getting current position...');
       _currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 15),
-      );
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 0,
+        ),
+      ).timeout(const Duration(seconds: 15));
 
       debugPrint('Position obtained: ${_currentPosition?.latitude}, ${_currentPosition?.longitude}');
 
@@ -126,6 +137,8 @@ class LocationServices extends ChangeNotifier {
 
   // Search location by address
   Future<String?> searchLocation(String query) async {
+    if (query.trim().isEmpty) return null;
+    
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -155,16 +168,112 @@ class LocationServices extends ChangeNotifier {
         return query;
       }
       
+      _error = 'Location not found. Please try a different search term.';
       _isLoading = false;
       notifyListeners();
       return null;
     } catch (e) {
-      _error = 'Failed to search location: $e';
+      _error = 'Failed to search location. Please check your internet connection.';
       _isLoading = false;
       debugPrint('Search location error: $e');
       notifyListeners();
       return null;
     }
+  }
+
+  // Get location suggestions for real-time search using geocoding
+  Future<List<String>> getLocationSuggestions(String query) async {
+    if (query.trim().isEmpty || query.length < 3) return [];
+
+    try {
+      debugPrint('Getting real location suggestions for: $query');
+      
+      final List<String> suggestions = [];
+      
+      // Try different variations of the query to get real locations
+      final queryVariations = [
+        query,
+        '$query, USA',
+        '$query Street',
+        '$query Avenue',
+        '$query Road',
+      ];
+      
+      for (String variation in queryVariations) {
+        try {
+          List<geocoding.Location> locations = await geocoding.locationFromAddress(variation);
+          
+          if (locations.isNotEmpty) {
+            // Get the address for each location found
+            for (geocoding.Location location in locations.take(2)) {
+              try {
+                List<geocoding.Placemark> placemarks = await geocoding.placemarkFromCoordinates(
+                  location.latitude, 
+                  location.longitude
+                );
+                
+                if (placemarks.isNotEmpty) {
+                  final placemark = placemarks.first;
+                  String address = _buildAddressFromPlacemark(placemark);
+                  
+                  if (address.isNotEmpty && !suggestions.contains(address)) {
+                    suggestions.add(address);
+                  }
+                }
+              } catch (reverseGeoError) {
+                debugPrint('Reverse geocoding error for variation "$variation": $reverseGeoError');
+              }
+            }
+          }
+        } catch (geoError) {
+          debugPrint('Geocoding error for variation "$variation": $geoError');
+        }
+        
+        // Stop if we have enough suggestions
+        if (suggestions.length >= 5) break;
+      }
+      
+      // If no real locations found, add some contextual suggestions
+      if (suggestions.isEmpty) {
+        suggestions.addAll([
+          '$query (Try adding city name)',
+          '$query Street',
+          '$query Avenue',
+        ]);
+      }
+      
+      return suggestions.take(5).toList();
+    } catch (e) {
+      debugPrint('Error getting location suggestions: $e');
+      
+      // Fallback suggestions if geocoding fails
+      return [
+        '$query (Check spelling)',
+        '$query Street',
+        '$query Road',
+      ];
+    }
+  }
+
+  // Helper method to build address string from placemark
+  String _buildAddressFromPlacemark(geocoding.Placemark placemark) {
+    List<String> addressParts = [];
+    
+    if (placemark.name != null && placemark.name!.isNotEmpty) {
+      addressParts.add(placemark.name!);
+    } else if (placemark.street != null && placemark.street!.isNotEmpty) {
+      addressParts.add(placemark.street!);
+    }
+    
+    if (placemark.locality != null && placemark.locality!.isNotEmpty) {
+      addressParts.add(placemark.locality!);
+    }
+    
+    if (placemark.administrativeArea != null && placemark.administrativeArea!.isNotEmpty) {
+      addressParts.add(placemark.administrativeArea!);
+    }
+    
+    return addressParts.join(', ');
   }
 
   // Start real-time location tracking

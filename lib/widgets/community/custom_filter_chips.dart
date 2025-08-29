@@ -24,15 +24,15 @@ class CustomFilterChip extends StatelessWidget {
         width: 59.w,
         // padding: EdgeInsets.symmetric(horizontal: 12.w),
         decoration: BoxDecoration(
-          color: isActive ? buttonclr : bgclr,
+          color: isActive ? AppColors.buttonclr : AppColors.bgclr,
           borderRadius: BorderRadius.circular(10.r),
-          border: Border.all(color: buttonclr, width: 1.w),
+          border: Border.all(color: AppColors.buttonclr, width: 1.w),
         ),
         child: Center(
           child: Text(
             title,
             style: AppTextStyles.futuraBook400.copyWith(
-              color: isActive ? Colors.white : buttonclr,
+              color: isActive ? Colors.white : AppColors.buttonclr,
               fontSize: 11.sp,
               // fontWeight: FontWeight.w400,
             ),

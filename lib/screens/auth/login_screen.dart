@@ -3,7 +3,8 @@ import 'package:fava/core/constants/colors.dart';
 import 'package:fava/core/utils/app_text_styles.dart';
 import 'package:fava/core/utils/validators.dart';
 import 'package:fava/providers/auth_provider.dart';
-import 'package:fava/widgets/auth/custom_auth_header.dart';
+import 'package:fava/widgets/auth/custom_app_bar.dart';
+import 'package:fava/widgets/auth/custom_text_field.dart';
 import 'package:fava/widgets/auth/location_sharing.dart';
 import 'package:fava/widgets/auth/social_login_section.dart';
 import 'package:fava/widgets/common/custom_elevated_button.dart';
@@ -373,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: bgclr,
+      backgroundColor: AppColors.bgclr,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
@@ -390,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 23.h),
 
-                  _CustomTextFormField(
+                  CustomTextFormField(
                     labelText: 'Email Address',
                     hintText: 'Enter your email',
                     controller: _emailController,
@@ -402,7 +403,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 10.h),
 
-                  _CustomTextFormField(
+                  CustomTextFormField(
                     labelText: "Password",
                     hintText: "Enter your password",
                     obscureText: true,
@@ -425,7 +426,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         "Forgot Password?",
                         style: AppTextStyles.manroperegular400.copyWith(
-                          color: blue,
+                          color: AppColors.blue,
                           fontSize: 12.sp,
                         ),
                       ),
@@ -485,105 +486,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// Custom Text Field for Login Screen (No Error Display Below)
-class _CustomTextFormField extends StatelessWidget {
-  final String? hintText;
-  final String? labelText;
-  final TextEditingController? controller;
-  final bool? obscureText;
-  final TextInputType? keyboardType;
-  final FocusNode? focusNode;
-  final TextInputAction? textInputAction;
-  final void Function(String)? onFieldSubmitted;
-  final bool hasError;
-
-  const _CustomTextFormField({
-    this.hintText,
-    this.labelText,
-    this.controller,
-    this.obscureText,
-    this.keyboardType,
-    this.focusNode,
-    this.textInputAction,
-    this.onFieldSubmitted,
-    required this.hasError,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final Color labelColor = hasError ? errorclr : Colors.black;
-    final Color textColor = hasError ? errorclr : grayDark;
-    final Color cursorColor = hasError ? errorclr : grayDark;
-    final Color borderColor = hasError ? errorclr : Colors.transparent;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (labelText != null) ...[
-          Text(
-            labelText!,
-            style: AppTextStyles.futuraBook400.copyWith(
-              fontSize: 12.sp,
-              color: labelColor,
-            ),
-          ),
-          SizedBox(height: 4.h),
-        ],
-
-        SizedBox(
-          height: 36.h,
-          child: TextFormField(
-            style: AppTextStyles.futuraBook400.copyWith(
-              fontSize: 12.sp,
-              color: textColor,
-            ),
-            cursorColor: cursorColor,
-            controller: controller,
-            focusNode: focusNode,
-            obscureText: obscureText ?? false,
-            keyboardType: keyboardType,
-            textInputAction: textInputAction,
-            onFieldSubmitted: onFieldSubmitted,
-
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: AppTextStyles.futuraBook400.copyWith(
-                color: hintxtclr,
-                fontSize: 12.sp,
-              ),
-              filled: true,
-              fillColor: txtfieldbgclr,
-
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-                vertical: 10.h,
-              ),
-
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(
-                  color: borderColor,
-                  width: borderColor == Colors.transparent ? 0 : 1,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(
-                  color: borderColor,
-                  width: borderColor == Colors.transparent ? 0 : 1,
-                ),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: grayLight, width: 1),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 // Sign Up Prompt Widget
 class _SignUpPromptWidget extends StatelessWidget {
@@ -598,7 +500,7 @@ class _SignUpPromptWidget extends StatelessWidget {
               text: "Don't have an account? ",
               style: AppTextStyles.manroperegular400.copyWith(
                 fontSize: 12.sp,
-                color: grayMedium,
+                color: AppColors.grayMedium,
               ),
             ),
             TextSpan(
@@ -607,7 +509,7 @@ class _SignUpPromptWidget extends StatelessWidget {
               text: "Sign Up",
               style: AppTextStyles.manroperegular400.copyWith(
                 fontSize: 12.sp,
-                color: blue,
+                color: AppColors.blue,
               ),
             ),
           ],
@@ -633,15 +535,15 @@ class _ErrorMessageWidget extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: txtfieldbgclr,
+        color: AppColors.txtfieldbgclr,
         borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: errorclr, width: 1),
+        border: Border.all(color: AppColors.errorclr, width: 1),
       ),
       child: Text(
         message,
         style: AppTextStyles.futuraBook400.copyWith(
           fontSize: 12.sp,
-          color: errorclr,
+          color: AppColors.errorclr,
         ),
         textAlign: TextAlign.center,
       ),

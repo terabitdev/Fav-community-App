@@ -8,7 +8,7 @@ import 'package:fava/screens/community/feed_screen.dart';
 import 'package:fava/screens/groups/groups_screen.dart';
 import 'package:fava/screens/profile/profile_screen.dart';
 import 'package:fava/screens/updates/updates_screen.dart';
-import 'package:fava/widgets/auth/custom_auth_header.dart';
+import 'package:fava/widgets/auth/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -42,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   final List<Widget> screens = [
     const FeedScreen(),
-    const GroupsScreen(),
+    const MyGroupsScreen(),
     const RequestScreen(),
     const UpdateScreen(),
-    const ProfileScreen(),
+    const UserProfileScreen(),
   ];
 
   @override
@@ -81,21 +81,30 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (context, navProvider, child) {
         return Scaffold(
           extendBody: true,
-          backgroundColor: bgclr,
+          backgroundColor: AppColors.bgclr,
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // SizedBox(height: 22.h),
-                  CustomAppBar(
-                    backButton: false,
-                    title: "Feed Screen",
-                    appLogo: true,
-                  ),
-                  SizedBox(height: 17.h),
-                  buildSearchField(),
+                  // if the profile page is not selected show this column
+                  navProvider.selectedIndex != 4
+                      ? SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomAppBar(
+                                backButton: false,
+                                title: "Feed Screen",
+                                appLogo: true,
+                              ),
+                              SizedBox(height: 17.h),
+                              buildSearchField(),
+                            ],
+                          ),
+                        )
+                      : SizedBox.shrink(),
                   Expanded(
                     child: PageView(
                       controller: navProvider.pageController,
@@ -127,10 +136,12 @@ Widget buildSearchField() {
           onChanged: filterProvider.setSearch,
           decoration: InputDecoration(
             filled: true,
-            suffixIcon: Icon(Icons.search, color: hintxtclr),
-            fillColor: txtfieldbgclr,
+            suffixIcon: Icon(Icons.search, color: AppColors.hintxtclr),
+            fillColor: AppColors.txtfieldbgclr,
             hintText: 'Search requests...',
-            hintStyle: AppTextStyles.futuraBook400.copyWith(color: hintxtclr),
+            hintStyle: AppTextStyles.futuraBook400.copyWith(
+              color: AppColors.hintxtclr,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
               borderSide: BorderSide.none,

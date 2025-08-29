@@ -19,7 +19,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.width,
     required this.text,
     this.onPressed, // Can be null when loading
-    this.bgColor = buttonclr,
+    this.bgColor = AppColors.buttonclr,
     this.iconPath,
     this.textStyle,
     this.height = 36,
@@ -33,7 +33,7 @@ class CustomElevatedButton extends StatelessWidget {
 
     // Handle colors for different states
     final Color effectiveBgColor = isDisabled
-        ? (isLoading ? buttonclr.withOpacity(0.7) : buttonclr)
+        ? (isLoading ? AppColors.buttonclr.withOpacity(0.7) : AppColors.buttonclr)
         : bgColor;
 
     return SizedBox(
@@ -50,10 +50,7 @@ class CustomElevatedButton extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
           ),
           // Add elevation changes for disabled state
-          elevation: WidgetStateProperty.resolveWith<double>((states) {
-            if (states.contains(WidgetState.disabled)) return 0;
-            return 2;
-          }),
+          elevation: WidgetStateProperty.all(0),
         ),
         onPressed: isDisabled ? null : onPressed,
         child: isLoading

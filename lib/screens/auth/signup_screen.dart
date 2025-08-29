@@ -4,7 +4,7 @@ import 'package:fava/core/utils/app_text_styles.dart';
 import 'package:fava/core/utils/validators.dart';
 import 'package:fava/core/utils/formatters.dart';
 import 'package:fava/providers/auth_provider.dart';
-import 'package:fava/widgets/auth/custom_auth_header.dart';
+import 'package:fava/widgets/auth/custom_app_bar.dart';
 import 'package:fava/widgets/auth/location_sharing.dart';
 import 'package:fava/widgets/auth/social_login_section.dart';
 import 'package:fava/widgets/common/custom_elevated_button.dart';
@@ -593,7 +593,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: bgclr,
+      backgroundColor: AppColors.bgclr,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
@@ -752,10 +752,10 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool hasError = error != null;
-    final Color labelColor = hasError ? errorclr : Colors.black;
-    final Color textColor = hasError ? errorclr : grayDark;
-    final Color cursorColor = hasError ? errorclr : grayDark;
-    final Color borderColor = hasError ? errorclr : Colors.transparent;
+    final Color labelColor = hasError ? AppColors.errorclr : Colors.black;
+    final Color textColor = hasError ? AppColors.errorclr : AppColors.grayDark;
+    final Color cursorColor = hasError ? AppColors.errorclr : AppColors.grayDark;
+    final Color borderColor = hasError ? AppColors.errorclr : Colors.transparent;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -790,11 +790,11 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: AppTextStyles.futuraBook400.copyWith(
-                color: hintxtclr,
+                color: AppColors.hintxtclr,
                 fontSize: 12.sp,
               ),
               filled: true,
-              fillColor: txtfieldbgclr,
+              fillColor: AppColors.txtfieldbgclr,
 
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16.w,
@@ -817,7 +817,7 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: grayLight, width: 1),
+                borderSide: BorderSide(color: AppColors.grayLight, width: 1),
               ),
             ),
           ),
@@ -832,7 +832,7 @@ class _CustomTextFormFieldWithInlineError extends StatelessWidget {
               hasError ? error! : (helperText ?? ""),
               style: AppTextStyles.futuraBook400.copyWith(
                 fontSize: 10.sp,
-                color: hasError ? errorclr : Color.fromRGBO(145, 145, 145, 1),
+                color: hasError ? AppColors.errorclr : Color.fromRGBO(145, 145, 145, 1),
               ),
             ),
           ),
@@ -854,7 +854,7 @@ class _PrivacyPolicy extends StatelessWidget {
           TextSpan(
             text: "By continuing, you agree to FAVA's ",
             style: AppTextStyles.manroperegular400.copyWith(
-              color: grayMedium,
+              color: AppColors.grayMedium,
               fontSize: 12.sp,
             ),
           ),
@@ -863,7 +863,7 @@ class _PrivacyPolicy extends StatelessWidget {
               TextSpan(
                 text: "Terms ",
                 style: AppTextStyles.manroperegular400.copyWith(
-                  color: blue,
+                  color: AppColors.blue,
                   fontSize: 12.sp,
                 ),
               ),
@@ -874,7 +874,7 @@ class _PrivacyPolicy extends StatelessWidget {
               TextSpan(
                 text: "And ",
                 style: AppTextStyles.manroperegular400.copyWith(
-                  color: grayMedium,
+                  color: AppColors.grayMedium,
                   fontSize: 12.sp,
                 ),
               ),
@@ -885,7 +885,7 @@ class _PrivacyPolicy extends StatelessWidget {
               TextSpan(
                 text: "Privacy Policy.",
                 style: AppTextStyles.manroperegular400.copyWith(
-                  color: blue,
+                  color: AppColors.blue,
                   fontSize: 12.sp,
                 ),
               ),
@@ -919,7 +919,7 @@ class _SignUpPromptWidget extends StatelessWidget {
               text: "Sign In",
               style: AppTextStyles.manroperegular400.copyWith(
                 fontSize: 12.sp,
-                color: blue,
+                color: AppColors.blue,
               ),
             ),
           ],

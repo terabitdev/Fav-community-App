@@ -84,10 +84,10 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               decoration: BoxDecoration(
-                color: txtfieldbgclr,
+                color: AppColors.txtfieldbgclr,
                 borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(
-                  color: _selectedDate != null ? successclr : Colors.transparent,
+                  color: _selectedDate != null ? AppColors.buttonclr : Colors.transparent,
                   width: 1,
                 ),
               ),
@@ -96,7 +96,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
                 if (widget.prefixIcon != null) ...[
                   Icon(
                     widget.prefixIcon,
-                    color: _selectedDate != null ? successclr : hintxtclr,
+                    color: _selectedDate != null ? AppColors.buttonclr : AppColors.hintxtclr,
                     size: 20.sp,
                   ),
                   SizedBox(width: 12.w),
@@ -106,7 +106,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
                     _displayText,
                     style: AppTextStyles.futuraBook400.copyWith(
                       fontSize: 12.sp,
-                      color: _selectedDate != null ? grayDark : hintxtclr,
+                      color: _selectedDate != null ? AppColors.grayDark : AppColors.hintxtclr,
                     ),
                   ),
                 ),
@@ -120,7 +120,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
                     },
                     child: Icon(
                       Icons.clear,
-                      color: grayMedium,
+                      color: AppColors.grayMedium,
                       size: 18.sp,
                     ),
                   ),
@@ -216,10 +216,10 @@ class _TimeRangeSelectionWidgetState extends State<TimeRangeSelectionWidget> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: txtfieldbgclr,
+              color: AppColors.txtfieldbgclr,
               borderRadius: BorderRadius.circular(10.r),
               border: Border.all(
-                color: (_startTime != null && _endTime != null) ? successclr : Colors.transparent,
+                color: (_startTime != null && _endTime != null) ? AppColors.buttonclr : Colors.transparent,
                 width: 1,
               ),
             ),
@@ -228,7 +228,7 @@ class _TimeRangeSelectionWidgetState extends State<TimeRangeSelectionWidget> {
                 if (widget.prefixIcon != null) ...[
                   Icon(
                     widget.prefixIcon,
-                    color: (_startTime != null && _endTime != null) ? successclr : hintxtclr,
+                    color: (_startTime != null && _endTime != null) ? AppColors.buttonclr : AppColors.hintxtclr,
                     size: 20.sp,
                   ),
                   SizedBox(width: 12.w),
@@ -238,7 +238,7 @@ class _TimeRangeSelectionWidgetState extends State<TimeRangeSelectionWidget> {
                     _displayText,
                     style: AppTextStyles.futuraBook400.copyWith(
                       fontSize: 14.sp,
-                      color: (_startTime != null && _endTime != null) ? Colors.black87 : hintxtclr,
+                      color: (_startTime != null && _endTime != null) ? Colors.black87 : AppColors.hintxtclr,
                     ),
                   ),
                 ),
@@ -253,7 +253,7 @@ class _TimeRangeSelectionWidgetState extends State<TimeRangeSelectionWidget> {
                     },
                     child: Icon(
                       Icons.clear,
-                      color: grayMedium,
+                      color: AppColors.grayMedium,
                       size: 18.sp,
                     ),
                   ),
@@ -347,10 +347,10 @@ class _DateTimeSelectionWidgetState extends State<DateTimeSelectionWidget> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: txtfieldbgclr,
+              color: AppColors.txtfieldbgclr,
               borderRadius: BorderRadius.circular(10.r),
               border: Border.all(
-                color: _selectedDateTime != null ? successclr : Colors.transparent,
+                color: _selectedDateTime != null ? AppColors.buttonclr : Colors.transparent,
                 width: 1,
               ),
             ),
@@ -359,7 +359,7 @@ class _DateTimeSelectionWidgetState extends State<DateTimeSelectionWidget> {
                 if (widget.prefixIcon != null) ...[
                   Icon(
                     widget.prefixIcon,
-                    color: _selectedDateTime != null ? successclr : hintxtclr,
+                    color: _selectedDateTime != null ? AppColors.buttonclr : AppColors.hintxtclr,
                     size: 20.sp,
                   ),
                   SizedBox(width: 12.w),
@@ -369,7 +369,7 @@ class _DateTimeSelectionWidgetState extends State<DateTimeSelectionWidget> {
                     _displayText,
                     style: AppTextStyles.futuraBook400.copyWith(
                       fontSize: 14.sp,
-                      color: _selectedDateTime != null ? Colors.black87 : hintxtclr,
+                      color: _selectedDateTime != null ? Colors.black87 : AppColors.hintxtclr,
                     ),
                   ),
                 ),
@@ -383,7 +383,7 @@ class _DateTimeSelectionWidgetState extends State<DateTimeSelectionWidget> {
                     },
                     child: Icon(
                       Icons.clear,
-                      color: grayMedium,
+                      color: AppColors.grayMedium,
                       size: 18.sp,
                     ),
                   ),

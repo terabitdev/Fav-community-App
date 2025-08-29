@@ -14,18 +14,18 @@ class SocialLoginSection extends StatelessWidget {
         // Divider with "Or" text
         Row(
           children: [
-            Expanded(child: Divider(color: grayLight, thickness: 1)),
+            Expanded(child: Divider(color: AppColors.grayLight, thickness: 1)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Text(
                 "Or",
                 style: AppTextStyles.manropebold.copyWith(
                   fontSize: 15.sp,
-                  color: grayDark,
+                  color: AppColors.grayDark,
                 ),
               ),
             ),
-            Expanded(child: Divider(color: grayLight, thickness: 1)),
+            Expanded(child: Divider(color: AppColors.grayLight, thickness: 1)),
           ],
         ),
         SizedBox(height: 16.h),

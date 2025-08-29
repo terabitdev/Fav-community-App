@@ -13,7 +13,7 @@ class OnboardingScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgclr,
+      backgroundColor: AppColors.bgclr,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
@@ -30,7 +30,7 @@ class OnboardingScreen2 extends StatelessWidget {
             _buildTextContent(context),
             SizedBox(height: 64.h),
             CircularButtonWithArc(
-              buttonclr: buttonclr,
+              buttonclr: AppColors.buttonclr,
               onPressed: () => context.goNamed(AppRoute.home.name),
               size: 0.25,
             ),
@@ -78,7 +78,7 @@ class OnboardingScreen2 extends StatelessWidget {
             style: AppTextStyles.futuraBook400.copyWith(
               fontSize: 16.sp,
               height: 1.2,
-              color: grayDark,
+              color: AppColors.grayDark,
             ),
           ),
         ],

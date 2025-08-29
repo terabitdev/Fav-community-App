@@ -18,15 +18,15 @@ class ErrorMessageWidget extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: txtfieldbgclr,
+        color: AppColors.txtfieldbgclr,
         borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: errorclr, width: 1),
+        border: Border.all(color: AppColors.errorclr, width: 1),
       ),
       child: Text(
         message,
         style: AppTextStyles.futuraBook400.copyWith(
           fontSize: 12.sp,
-          color: errorclr,
+          color: AppColors.errorclr,
         ),
         textAlign: TextAlign.center,
       ),

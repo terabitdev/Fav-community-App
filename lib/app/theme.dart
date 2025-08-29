@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: AppColors.bgclr,
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: bgclr,
+        seedColor: AppColors.bgclr,
         brightness: Brightness.light,
       ),
       fontFamily: 'FuturaPT',

@@ -38,20 +38,20 @@ class RequestCard extends StatelessWidget {
     Color getRequestColor(String requestType) {
       switch (requestType.toLowerCase()) {
         case "errand":
-          return errandClr;
+          return AppColors.errandClr;
         case "favor":
-          return favorClr;
+          return AppColors.favorClr;
         case "ride":
-          return rideClr;
+          return AppColors.rideClr;
         default:
-          return othersClr; // fallback
+          return AppColors.othersClr; // fallback
       }
     }
 
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: bgclr,
+        color: AppColors.bgclr,
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
@@ -89,7 +89,7 @@ class RequestCard extends StatelessWidget {
                 timeAgo,
                 style: AppTextStyles.futuraBook400.copyWith(
                   fontSize: 10.sp,
-                  color: hintxtclr,
+                  color: AppColors.hintxtclr,
                 ),
               ),
               trailing: Row(
@@ -127,6 +127,7 @@ class RequestCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                  
                   SizedBox(width: 21.w),
                   SvgPicture.asset(
                     'assets/icons/cancel.svg',
@@ -166,7 +167,7 @@ class RequestCard extends StatelessWidget {
                   // width: 106.w,
                   // height: 24.h,
                   decoration: BoxDecoration(
-                    color: errorclr.withOpacity(0.25),
+                    color: AppColors.errorclr.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(5.r),
                   ),
                   child: Padding(
@@ -197,7 +198,7 @@ class RequestCard extends StatelessWidget {
                   // width: 56.w,
                   // height: 24.h,
                   decoration: BoxDecoration(
-                    color: successclr.withOpacity(0.25),
+                    color: AppColors.buttonclr.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(5.r),
                   ),
                   child: Padding(
@@ -209,7 +210,7 @@ class RequestCard extends StatelessWidget {
                       price,
                       style: AppTextStyles.futuraBook400.copyWith(
                         fontSize: 15.sp,
-                        color: successclr,
+                        color: AppColors.buttonclr,
                       ),
                     ),
                   ),
@@ -223,7 +224,7 @@ class RequestCard extends StatelessWidget {
               width: double.infinity,
               height: 39.h,
               textStyle: AppTextStyles.marlinRegular400.copyWith(
-                color: bgclr,
+                color: AppColors.bgclr,
                 fontSize: 18.sp
               ),
             ),

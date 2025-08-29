@@ -93,6 +93,19 @@ class MockDatabaseServices {
   Future<bool> addRequest(Request request) async {
     await _simulateNetworkDelay();
     _requests.add(request);
+    
+    // Also add to _requestData for the feed
+    final requestData = RequestData(
+      userName: request.userName,
+      timeAgo: "Just now",
+      requestTitle: request.requestTitle,
+      requestDescription: request.requestDescription,
+      distance: request.distance ?? "0.5 mi",
+      price: request.suggestedFee ?? "Free",
+      requestType: request.requestType,
+    );
+    _requestData.insert(0, requestData); // Add at beginning for newest first
+    
     return true;
   }
 
@@ -116,5 +129,56 @@ class MockDatabaseServices {
       return true;
     }
     return false;
+  }
+
+  // Get requests by user ID
+  Future<List<RequestData>> getUserRequests(String userId) async {
+    await _simulateNetworkDelay();
+    
+    // Filter _requestData by userId (assuming RequestData has userId field)
+    // For now, return mock data filtered by userName
+    return _requestData.where((request) {
+      // Find matching user by name from mockUsers
+      final user = mockUsers.firstWhere(
+        (u) => u.fullName == request.userName,
+        orElse: () => mockUsers.first,
+      );
+      return user.id == userId;
+    }).toList();
+  }
+
+  // Get all requests (both Request and RequestData combined)
+  Future<List<RequestData>> getAllRequestsData() async {
+    await _simulateNetworkDelay();
+    
+    // Convert Request objects to RequestData and combine with existing _requestData
+    final requestDataFromRequests = _requests.map((request) => RequestData(
+      userName: request.userName,
+      timeAgo: _calculateTimeAgo(request.createdAt),
+      requestTitle: request.requestTitle,
+      requestDescription: request.requestDescription,
+      distance: request.distance ?? "0.5 mi",
+      price: request.suggestedFee ?? "Free",
+      requestType: request.requestType,
+    )).toList();
+    
+    // Combine and return all requests
+    return [...requestDataFromRequests, ..._requestData];
+  }
+
+  // Helper method to calculate time ago
+  String _calculateTimeAgo(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+    
+    if (difference.inDays > 0) {
+      return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+    } else {
+      return 'Just now';
+    }
   }
 }

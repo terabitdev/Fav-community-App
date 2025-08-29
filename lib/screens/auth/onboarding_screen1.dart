@@ -13,7 +13,7 @@ class OnboardingScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgclr,
+      backgroundColor: AppColors.bgclr,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 18.w),
         child: Column(
@@ -35,13 +35,13 @@ class OnboardingScreen1 extends StatelessWidget {
               "You Got Me. I Got You.",
               style: AppTextStyles.futuraDemi600.copyWith(
                 fontSize: 20.sp,
-                color: coralDark,
+                color: AppColors.coralDark,
               ),
             ),
             SizedBox(height: 39.h),
             _buildInfoContainer(context),
             SizedBox(height: 169.h),
-            CircularButtonWithArc(buttonclr: buttonclr, onPressed: () => context.pushNamed(AppRoute.onboarding2.name)),
+            CircularButtonWithArc(buttonclr: AppColors.buttonclr, onPressed: () => context.pushNamed(AppRoute.onboarding2.name)),
           ],
         ),
       ),
@@ -54,7 +54,7 @@ class OnboardingScreen1 extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         border: Border.all(
-          color: coralMedium,
+          color: AppColors.coralMedium,
           width: 1.w,
         ),
       ),
@@ -69,7 +69,7 @@ class OnboardingScreen1 extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: coralLight,
+                color: AppColors.coralLight,
                 borderRadius: BorderRadius.circular(100.r),
               ),
               child: Padding(
@@ -98,7 +98,7 @@ class OnboardingScreen1 extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: AppTextStyles.futuraBook400.copyWith(
                       fontSize: 12.sp,
-                      color: grayDark,
+                      color: AppColors.grayDark,
                     ),
                   ),
                 ],
